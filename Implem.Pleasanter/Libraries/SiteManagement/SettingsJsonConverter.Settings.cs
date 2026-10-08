@@ -5133,6 +5133,7 @@ namespace Implem.Pleasanter.Libraries.SiteManagement
                     public bool? AfterDelete;
                     public bool? AfterCopy;
                     public bool? AfterBulkUpdate;
+                    public bool? NotifyPerRecordOnBulkUpdate;
                     public bool? AfterBulkDelete;
                     public bool? AfterImport;
                     public bool? Disabled;
@@ -5201,6 +5202,7 @@ namespace Implem.Pleasanter.Libraries.SiteManagement
                         dst.AfterDelete = notification.AfterDelete != false;
                         dst.AfterCopy = notification.AfterCopy != false;
                         dst.AfterBulkUpdate = notification.AfterBulkUpdate != false;
+                        dst.NotifyPerRecordOnBulkUpdate = notification.NotifyPerRecordOnBulkUpdate == true;
                         dst.AfterBulkDelete = notification.AfterBulkDelete != false;
                         dst.AfterImport = notification.AfterImport != false;
                         dst.Disabled = notification.Disabled == true;
@@ -5240,6 +5242,7 @@ namespace Implem.Pleasanter.Libraries.SiteManagement
                                 new (){Key="AfterDelete",Text=Displays.AfterDelete(context:context)},
                                 new (){Key="AfterCopy",Text=Displays.AfterCopy(context:context)},
                                 new (){Key="AfterBulkUpdate",Text=Displays.AfterBulkUpdate(context:context)},
+                                new (){Key="NotifyPerRecordOnBulkUpdate",Text=Displays.NotifyPerRecordOnBulkUpdate(context:context)},
                                 new (){Key="AfterBulkDelete",Text=Displays.AfterBulkDelete(context:context)},
                                 new (){Key="AfterImport",Text=Displays.AfterImport(context:context)},
                                 new (){Key="Disabled",Text=Displays.Disabled(context:context)},

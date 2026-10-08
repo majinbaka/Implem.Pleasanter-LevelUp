@@ -74,7 +74,7 @@ public void Notice(
 <!--Model_Notice_RelatedDataColumnCases-->
 
                         });
-            notification.ReplaceRelatedUsers(
+            notification = notification.ReplaceRelatedUsers(
                 context: context,
                 users: users);
         }
@@ -127,7 +127,9 @@ public void Notice(
                 }
                 break;
             case "Updated":
-                if (notification.AfterUpdate != false
+            case "BulkUpdated":
+                if (((type == "Updated" && notification.AfterUpdate != false)
+                    || (type == "BulkUpdated" && notification.GetNotifyPerRecordOnBulkUpdate()))
                     && notification.MonitorChangesColumns.Any(columnName => PropertyUpdated(
                         context: context,
                         name: columnName)))

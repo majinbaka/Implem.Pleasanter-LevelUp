@@ -14148,6 +14148,8 @@ namespace Implem.Pleasanter.Models
                     .Th(action: () => hb
                         .Text(text: Displays.AfterBulkUpdate(context: context)))
                     .Th(action: () => hb
+                        .Text(text: Displays.NotifyPerRecordOnBulkUpdate(context: context)))
+                    .Th(action: () => hb
                         .Text(text: Displays.AfterBulkDelete(context: context)))
                     .Th(action: () => hb
                         .Text(text: Displays.AfterImport(context: context)))
@@ -14224,6 +14226,10 @@ namespace Implem.Pleasanter.Models
                             .Span(
                                 css: "ui-icon ui-icon-circle-check",
                                 _using: notification.AfterBulkUpdate != false))
+                        .Td(action: () => hb
+                            .Span(
+                                css: "ui-icon ui-icon-circle-check",
+                                _using: notification.NotifyPerRecordOnBulkUpdate == true))
                         .Td(action: () => hb
                             .Span(
                                 css: "ui-icon ui-icon-circle-check",
@@ -14441,6 +14447,11 @@ namespace Implem.Pleasanter.Models
                                 controlCss: " always-send",
                                 labelText: Displays.AfterBulkUpdate(context: context),
                                 _checked: notification.AfterBulkUpdate != false)
+                            .FieldCheckBox(
+                                controlId: "NotificationNotifyPerRecordOnBulkUpdate",
+                                controlCss: " always-send",
+                                labelText: Displays.NotifyPerRecordOnBulkUpdate(context: context),
+                                _checked: notification.NotifyPerRecordOnBulkUpdate == true)
                             .FieldCheckBox(
                                 controlId: "NotificationAfterBulkDelete",
                                 controlCss: " always-send",

@@ -4062,7 +4062,8 @@ namespace Implem.Pleasanter.Models
                         body.Append(
                             $"{column.LabelText} : ",
                             $"{resultModel.ToDisplay(context: context, ss: ss, column: column, mine: null)}\n"));
-                    if (notification.AfterBulkUpdate != false)
+                    if (notification.AfterBulkUpdate != false
+                        && !notification.GetNotifyPerRecordOnBulkUpdate())
                     {
                         notification.Send(
                             context: context,
@@ -4101,6 +4102,9 @@ namespace Implem.Pleasanter.Models
                     transactional: true,
                     statements: onBulkUpdatingExtendedStatements.ToArray());
             }
+            var notice = ss.Notifications?.Any(notification =>
+                notification.Disabled != true
+                && notification.GetNotifyPerRecordOnBulkUpdate()) == true;
             var count = 0;
             new ResultCollection(
                 context: context,
@@ -4128,7 +4132,9 @@ namespace Implem.Pleasanter.Models
                     resultModel.Update(
                         context: context,
                         ss: ss,
-                        extendedSqls: false);
+                        extendedSqls: false,
+                        notice: notice,
+                        noticeType: "BulkUpdated");
                     count++;
                 });
             var onBulkUpdatedExtendedStatements = new List<SqlStatement>().OnBulkUpdatedExtendedSqls(

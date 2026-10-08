@@ -1,0 +1,33 @@
+﻿{
+    "Id": "NotifyPerRecordOnBulkUpdate",
+    "Type": 110,
+    "Languages": [
+        {
+            "Body": "Notify per record on bulk update"
+        },
+        {
+            "Language": "zh",
+            "Body": "批量更新时按记录通知"
+        },
+        {
+            "Language": "ja",
+            "Body": "一括更新時はレコード単位で通知"
+        },
+        {
+            "Language": "de",
+            "Body": "Bei Massenaktualisierung pro Datensatz benachrichtigen"
+        },
+        {
+            "Language": "ko",
+            "Body": "일괄 업데이트 시 레코드별로 알림"
+        },
+        {
+            "Language": "es",
+            "Body": "Notificar por registro en la actualización masiva"
+        },
+        {
+            "Language": "vn",
+            "Body": "Thông báo theo từng bản ghi khi cập nhật hàng loạt"
+        }
+    ]
+}
