@@ -10,7 +10,7 @@
                 context: context,
                 ss: ss,
                 notice: notice)),
-        type: "Updated");
+        type: noticeType);
     processes?
         .Where(process => process.MatchConditions)
         .ForEach(process =>

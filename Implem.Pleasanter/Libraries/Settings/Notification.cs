@@ -41,6 +41,7 @@ namespace Implem.Pleasanter.Libraries.Settings
         public bool? AfterDelete;
         public bool? AfterCopy;
         public bool? AfterBulkUpdate;
+        public bool? NotifyPerRecordOnBulkUpdate;
         public bool? AfterBulkDelete;
         public bool? AfterImport;
         public bool? Disabled;
@@ -110,6 +111,7 @@ namespace Implem.Pleasanter.Libraries.Settings
             bool afterDelete,
             bool afterCopy,
             bool afterBulkUpdate,
+            bool notifyPerRecordOnBulkUpdate,
             bool afterBulkDelete,
             bool afterImport,
             bool disabled)
@@ -137,6 +139,7 @@ namespace Implem.Pleasanter.Libraries.Settings
             AfterDelete = afterDelete;
             AfterCopy = afterCopy;
             AfterBulkUpdate = afterBulkUpdate;
+            NotifyPerRecordOnBulkUpdate = notifyPerRecordOnBulkUpdate;
             AfterBulkDelete = afterBulkDelete;
             AfterImport = afterImport;
             Disabled = disabled;
@@ -176,6 +179,7 @@ namespace Implem.Pleasanter.Libraries.Settings
             bool afterDelete,
             bool afterCopy,
             bool afterBulkUpdate,
+            bool notifyPerRecordOnBulkUpdate,
             bool afterBulkDelete,
             bool afterImport,
             bool disabled)
@@ -202,6 +206,7 @@ namespace Implem.Pleasanter.Libraries.Settings
             AfterDelete = afterDelete;
             AfterCopy = afterCopy;
             AfterBulkUpdate = afterBulkUpdate;
+            NotifyPerRecordOnBulkUpdate = notifyPerRecordOnBulkUpdate;
             AfterBulkDelete = afterBulkDelete;
             AfterImport = afterImport;
             Disabled = disabled;
@@ -416,9 +421,17 @@ namespace Implem.Pleasanter.Libraries.Settings
             return Type == Types.Mail && Address?.Contains("[RelatedUsers]") == true;
         }
 
-        public void ReplaceRelatedUsers(Context context, List<int> users)
+        public bool GetNotifyPerRecordOnBulkUpdate()
         {
-            Address = Address.Replace(
+            return AfterBulkUpdate != false
+                && NotifyPerRecordOnBulkUpdate == true;
+        }
+
+        public Notification ReplaceRelatedUsers(Context context, List<int> users)
+        {
+            // 一括更新等で同じ通知設定を複数レコードに使うため、元の設定は書き換えずに複製を返す
+            var notification = (Notification)MemberwiseClone();
+            notification.Address = Address.Replace(
                 "[RelatedUsers]",
                 Repository.ExecuteTable(
                     context: context,
@@ -442,6 +455,7 @@ namespace Implem.Pleasanter.Libraries.Settings
                                         userId: o.First().Int("OwnerId")),
                                     o.First()["MailAddress"].ToString()))
                                 .Join(";"));
+            return notification;
         }
 
         public Notification GetRecordingData(Context context, SiteSettings ss)
@@ -478,6 +492,10 @@ namespace Implem.Pleasanter.Libraries.Settings
             if (AfterBulkUpdate == false)
             {
                 notification.AfterBulkUpdate = AfterBulkUpdate;
+            }
+            if (NotifyPerRecordOnBulkUpdate == true)
+            {
+                notification.NotifyPerRecordOnBulkUpdate = NotifyPerRecordOnBulkUpdate;
             }
             if (AfterBulkDelete == false)
             {

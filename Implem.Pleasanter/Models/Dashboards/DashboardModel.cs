@@ -1018,6 +1018,7 @@ namespace Implem.Pleasanter.Models
             bool synchronizeSummary = true,
             bool forceSynchronizeSourceSummary = false,
             bool notice = false,
+            string noticeType = "Updated",
             string previousTitle = null,
             SqlParamCollection param = null,
             List<SqlStatement> additionalStatements = null,
@@ -1078,7 +1079,7 @@ namespace Implem.Pleasanter.Models
                             context: context,
                             ss: ss,
                             notice: notice)),
-                    type: "Updated");
+                    type: noticeType);
                 processes?
                     .Where(process => process.MatchConditions)
                     .ForEach(process =>
@@ -2087,7 +2088,7 @@ namespace Implem.Pleasanter.Models
                                     users.Add(dataRow.Int("Creator"));
                                     users.Add(dataRow.Int("Updator"));
                                 });
-                    notification.ReplaceRelatedUsers(
+                    notification = notification.ReplaceRelatedUsers(
                         context: context,
                         users: users);
                 }
@@ -2140,7 +2141,9 @@ namespace Implem.Pleasanter.Models
                         }
                         break;
                     case "Updated":
-                        if (notification.AfterUpdate != false
+                    case "BulkUpdated":
+                        if (((type == "Updated" && notification.AfterUpdate != false)
+                            || (type == "BulkUpdated" && notification.GetNotifyPerRecordOnBulkUpdate()))
                             && notification.MonitorChangesColumns.Any(columnName => PropertyUpdated(
                                 context: context,
                                 name: columnName)))
